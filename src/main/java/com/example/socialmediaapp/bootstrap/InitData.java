@@ -1,6 +1,5 @@
 package com.example.socialmediaapp.bootstrap;
 
-import com.example.socialmediaapp.entities.Post;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +14,6 @@ public class InitData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.atWarn().log("Initializing data");
-        Post post1 = Post.
 
     }
 }

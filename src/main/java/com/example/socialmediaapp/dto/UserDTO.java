@@ -1,6 +1,7 @@
 package com.example.socialmediaapp.dto;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
-    private String name;
-    private String fullname;
     private String password;
+
+
 }
