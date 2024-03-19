@@ -7,9 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 @Mapper
 public interface UserMapper {
-    @Mapping(target = "password", ignore = true)
+//    @Mapping(target = "group", ignore = true)
     User userDtoToUser(UserDTO dto);
-    @Mapping(target = "password", ignore = true)
-    @InheritInverseConfiguration
+//    @Mapping(target = "group_messages", ignore = true)
+//    @Mapping(target = "group", ignore = true)
     UserDTO userToUserDto(User user);
 }

@@ -9,9 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 
 @Log4j2
-@Data
 @Component
 @RequiredArgsConstructor
 public class InitData implements CommandLineRunner {
@@ -35,7 +35,7 @@ public class InitData implements CommandLineRunner {
                 .username("anyamurm")
                 .build();
         userRepository.saveAll(List.of(user1, user2));
-
+        generateUsers(10000);
 //        Group group1 = Group.builder()
 //                .groupName("students information")
 //                .build();
@@ -52,5 +52,19 @@ public class InitData implements CommandLineRunner {
 //                .build();
 //        groupMessageRepository.saveAll(List.of(groupMessage));
 //
+    }
+    public void generateUsers(int numberOfUsers) {
+
+        Random random = new Random();
+
+        for (int i = 1; i <= numberOfUsers; i++) {
+            User book = User.builder()
+                    .email("User " + i)
+                    .password(String.valueOf(random.nextInt(100_000_000,999_999_999)))
+                    .username("UserName " + i)
+                    .build();
+
+            userRepository.save(book);
+        }
     }
 }

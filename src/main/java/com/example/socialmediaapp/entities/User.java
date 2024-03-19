@@ -1,6 +1,8 @@
 package com.example.socialmediaapp.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -18,6 +20,9 @@ public class User {
     @GeneratedValue
     private Long id;
     private String username;
+    @NotNull
+    @NotBlank
+    @Column(nullable = false)
     private String email;
     private String password;
 

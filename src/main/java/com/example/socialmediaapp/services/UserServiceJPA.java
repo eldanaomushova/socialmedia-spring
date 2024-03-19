@@ -1,37 +1,76 @@
 package com.example.socialmediaapp.services;
 
+import com.example.socialmediaapp.dto.UserDTO;
 import com.example.socialmediaapp.entities.User;
+import com.example.socialmediaapp.mappers.UserMapper;
 import com.example.socialmediaapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceJPA {
-    private UserRepository userRepository;
+public class UserServiceJPA implements UserService {
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO convertEntityToDTO(User user) {
+        return userMapper.userToUserDto(user);
     }
 
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+    @Override
+    public Optional<UserDTO> getUserById(Long id) {
+        return Optional.ofNullable(
+                userMapper.userToUserDto(
+                        userRepository.findById(id).orElse(null)
+                )
+        );
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    @Override
+    public UserDTO createUser(UserDTO newUser) {
+        return userMapper.userToUserDto(
+                userRepository.save(userMapper.userDtoToUser(newUser))
+        );
     }
 
-    public User updateUser(Long id, User newUser) {
-        User existingUser = userRepository.findById(id).orElse(null);
-        if (existingUser != null) {
-            existingUser.setUsername(newUser.getUsername());
-            existingUser.setEmail(newUser.getEmail());
-            return userRepository.save(existingUser);
+    @Override
+    public Page<UserDTO> getAllUsers(Integer page, Integer size) {
+        return userRepository.findAll(getPageable(page, size))
+                .map(userMapper::userToUserDto);
+    }
+
+    @Override
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        if (pageable.getPageSize()>1000) {
+            // create custom exception and handle it
+            pageable = PageRequest.of(pageable.getPageNumber(), 1000, pageable.getSort());
         }
-        return null;
+
+
+        return userRepository.findAll(pageable).map(userMapper::userToUserDto);
     }
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+
+    private Pageable getPageable(Integer page, Integer size) {
+        if (page == null || page < 0)
+            page = 0;
+
+        if (size == null || size <= 0)
+            size = 25;
+
+        if (size > 1000)
+            size = 1000;
+
+        Sort sort = Sort.by(
+                Sort.Order.desc("email"),
+                Sort.Order.asc("username")
+        );
+
+        return PageRequest.of(page, size, sort);
     }
 }
