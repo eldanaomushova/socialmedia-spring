@@ -14,8 +14,10 @@ public interface UserService {
 
     Optional<UserDTO> getUserById(Long id);
     UserDTO createUser(UserDTO newUser);
-    Page<UserDTO> getAllUsers(Integer page, Integer size);
+
     Page<UserDTO> getAllUsers(Pageable pageable);
+    Optional<UserDTO> deleteById(Long id);
+    Optional<UserDTO> updateById(Long id);
 
 
 

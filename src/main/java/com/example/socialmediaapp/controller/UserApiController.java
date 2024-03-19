@@ -1,6 +1,9 @@
 package com.example.socialmediaapp.controller;
 
 import com.example.socialmediaapp.dto.UserDTO;
+import com.example.socialmediaapp.entities.User;
+import com.example.socialmediaapp.mappers.UserMapper;
+import com.example.socialmediaapp.repositories.UserRepository;
 import com.example.socialmediaapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,11 +15,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserApiController {
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @GetMapping
     public Page<UserDTO> getUsers(
@@ -25,21 +32,11 @@ public class UserApiController {
                     sort = {"email", "username"},
                     direction = Sort.Direction.DESC)
             Pageable pageable
-//            @RequestParam(required = false, defaultValue = "0") Integer page,
-//            @RequestParam(required = false, defaultValue = "25") Integer size,
-//            String[] sort
     ) {
 
         System.out.println("pageable = " + pageable);
-
-        /*System.out.println("page = " + page);
-        System.out.println("size = " + size);
-        System.out.println("sort = " + String.join("; ",sort));*/
-
         return userService.getAllUsers(pageable);
     }
-
-    private final UserService userService;
 
     @PostMapping()
     public ResponseEntity<UserDTO> createUser(@Validated @RequestBody UserDTO newUser) {
@@ -56,11 +53,24 @@ public class UserApiController {
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Resource with id:%d Not Found", id)
                 ));
-//                .orElseThrow(NotFoundException::new);
-//                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser){
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        User existingUser = optionalUser.get();
+        if(updatedUser.getUsername()!=null){
+            existingUser.setUsername((updatedUser.getUsername()));
+        }
+        User savedUser = userRepository.save(existingUser);
+        return ResponseEntity.ok(savedUser);
+    }
 }
 

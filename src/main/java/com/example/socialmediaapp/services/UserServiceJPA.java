@@ -40,12 +40,6 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public Page<UserDTO> getAllUsers(Integer page, Integer size) {
-        return userRepository.findAll(getPageable(page, size))
-                .map(userMapper::userToUserDto);
-    }
-
-    @Override
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         if (pageable.getPageSize()>1000) {
             // create custom exception and handle it
@@ -54,6 +48,17 @@ public class UserServiceJPA implements UserService {
 
 
         return userRepository.findAll(pageable).map(userMapper::userToUserDto);
+    }
+
+    @Override
+    public Optional<UserDTO> deleteById(Long id) {
+        userRepository.deleteById(id);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDTO> updateById(Long id) {
+        return Optional.empty();
     }
 
     private Pageable getPageable(Integer page, Integer size) {
