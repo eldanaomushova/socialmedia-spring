@@ -10,7 +10,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 @Mapper
 public interface UserMessageMapper {
-    UserMessage userMessageDTOtoUserMessage(UserMessageDTO userMessageDTO);
-    @InheritInverseConfiguration
-    UserMessage userMessagetoUserMessageDTO(UserMessage userMessage);
+//    UserMessage userMessageDTOtoUserMessage(UserMessageDTO userMessageDTO);
+//    @InheritInverseConfiguration
+//    @Mapping(target = "sender_id", ignore = true)
+//    @Mapping(target = "receiver_id", ignore = true)
+//    UserMessage userMessagetoUserMessageDTO(UserMessage userMessage);
 }

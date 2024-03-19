@@ -10,6 +10,7 @@ import java.security.Timestamp;
 
 @Builder
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "group_members")

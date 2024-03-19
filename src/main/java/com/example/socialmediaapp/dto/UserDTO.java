@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {

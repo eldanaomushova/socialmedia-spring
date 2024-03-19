@@ -5,12 +5,13 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
 @Builder
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
     @Id
     @EqualsAndHashCode.Include
@@ -19,4 +20,6 @@ public class User {
     private String username;
     private String email;
     private String password;
+
+
 }

@@ -6,10 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
-
 @Builder
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "group_messages")

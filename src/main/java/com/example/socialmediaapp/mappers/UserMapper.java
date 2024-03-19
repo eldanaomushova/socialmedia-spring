@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     User userDtoToUser(UserDTO dto);
-
+    @Mapping(target = "password", ignore = true)
     @InheritInverseConfiguration
     UserDTO userToUserDto(User user);
 }

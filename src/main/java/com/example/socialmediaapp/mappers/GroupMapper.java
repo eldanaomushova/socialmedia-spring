@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 
 @Mapper
 public interface GroupMapper {
-    Group groupDTOToGroup(GroupDTO dto);
-
-    @InheritInverseConfiguration
-    GroupDTO groupToGroupDTO(Group group);
+//    Group groupDTOToGroup(GroupDTO dto);
+//
+//    @InheritInverseConfiguration
+//    GroupDTO groupToGroupDTO(Group group);
 }

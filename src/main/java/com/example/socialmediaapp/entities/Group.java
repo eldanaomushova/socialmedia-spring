@@ -1,26 +1,24 @@
 package com.example.socialmediaapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.security.Timestamp;
+import lombok.*;
 
 @Builder
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "groups")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Group {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @EqualsAndHashCode.Include
     private Long id;
     private String groupName;
 
     @ManyToOne
     @JoinColumn(name = "creator_user_id")
-    private User creatorUser;
+    private User username;
 
 }

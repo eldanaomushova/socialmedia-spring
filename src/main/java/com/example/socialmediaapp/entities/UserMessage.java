@@ -6,10 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.security.Timestamp;
-
 @Builder
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_messages")
@@ -21,6 +20,7 @@ public class UserMessage {
     @JoinColumn(name = "sender_id")
     private User sender_id;
 
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver_id;
     private String messageContent;
