@@ -11,14 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 public interface UserService {
-
     Optional<UserDTO> getUserById(Long id);
     UserDTO createUser(UserDTO newUser);
 
     Page<UserDTO> getAllUsers(Pageable pageable);
     Optional<UserDTO> deleteById(Long id);
-    Optional<UserDTO> updateById(Long id);
 
-
-
+    Optional<UserDTO> updateById(Long id, UserDTO updatedUserDTO);
 }

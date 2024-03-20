@@ -23,7 +23,6 @@ import java.util.Optional;
 public class UserApiController {
     private final UserService userService;
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
     @GetMapping
     public Page<UserDTO> getUsers(
@@ -72,5 +71,13 @@ public class UserApiController {
         User savedUser = userRepository.save(existingUser);
         return ResponseEntity.ok(savedUser);
     }
-}
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
+        Optional<UserDTO> updatedUserOptional = userService.updateById(id, updatedUserDTO);
+        if (updatedUserOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        return ResponseEntity.ok(updatedUserOptional.get());
+    }
+}

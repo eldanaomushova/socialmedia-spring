@@ -7,9 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 @Mapper
 public interface UserMapper {
-//    @Mapping(target = "group", ignore = true)
+    @Mapping(target = "groupSet", ignore = true)
     User userDtoToUser(UserDTO dto);
-//    @Mapping(target = "group_messages", ignore = true)
-//    @Mapping(target = "group", ignore = true)
+    @Mapping(target = "groupSet", ignore = true)
     UserDTO userToUserDto(User user);
 }

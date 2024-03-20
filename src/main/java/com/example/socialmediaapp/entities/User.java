@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +27,7 @@ public class User {
     private String email;
     private String password;
 
-
+    @OneToMany(mappedBy = "username", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Group> groupSet;
 }

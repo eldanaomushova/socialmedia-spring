@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,8 +18,9 @@ public class Group {
     private Long id;
     private String groupName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_user_id")
+    @JsonIgnore
     private User username;
 
 }

@@ -1,10 +1,7 @@
 package com.example.socialmediaapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Data
@@ -14,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_messages")
 public class UserMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @GeneratedValue
     private Long messageId;
     @ManyToOne
     @JoinColumn(name = "sender_id")
