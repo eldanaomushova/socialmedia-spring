@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface GroupMessageMapper {
-//    GroupMessage groupMessageDTOtoGroupMessage(GroupMessageDTO groupMessageDTO);
-//    @InheritInverseConfiguration
-//    GroupMessageDTO groupMessagetoGroupMessageDTO(GroupMessage groupMessage);
+    GroupMessage groupMessageDTOtoGroupMessage(GroupMessageDTO groupMessageDTO);
+    GroupMessageDTO groupMessagetoGroupMessageDTO(GroupMessage groupMessage);
 }

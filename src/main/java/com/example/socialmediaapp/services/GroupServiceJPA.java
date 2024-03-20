@@ -55,11 +55,11 @@ public class GroupServiceJPA implements GroupServise{
 
     @Override
     public Optional<GroupDTO> updateGroupNameById(Long id, GroupDTO updatedGroupDTO) {
-        Optional<Group> optionalUser = groupRepository.findById(id);
-        if (optionalUser.isEmpty()) {
+        Optional<Group> optionalGroup = groupRepository.findById(id);
+        if (optionalGroup.isEmpty()) {
             return Optional.empty();
         }
-        Group group = optionalUser.get();
+        Group group = optionalGroup.get();
         group.setGroupName(updatedGroupDTO.getGroupName());
         Group updatedGroup = groupRepository.save(group);
         return Optional.of(groupMapper.groupToGroupDTO(updatedGroup));

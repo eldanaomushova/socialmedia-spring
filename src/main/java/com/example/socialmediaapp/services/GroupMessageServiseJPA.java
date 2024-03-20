@@ -1,40 +1,62 @@
 package com.example.socialmediaapp.services;
 
-import com.example.socialmediaapp.entities.Group;
+import com.example.socialmediaapp.dto.GroupMessageDTO;
 import com.example.socialmediaapp.entities.GroupMessage;
+import com.example.socialmediaapp.mappers.GroupMessageMapper;
 import com.example.socialmediaapp.repositories.GroupMessageRepository;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
-@NoArgsConstructor
-public class GroupMessageServiseJPA {
-    @Autowired
-    public GroupMessageRepository groupMessageRepository;
+@RequiredArgsConstructor
+public class GroupMessageServiseJPA implements GroupMessageServise {
+    private final GroupMessageRepository groupMsgRepository;
+    private final GroupMessageMapper groupMsgMapper;
 
-    public GroupMessage getGroupMessageById(Long id){
-        return groupMessageRepository.findById(id).orElse(null);
-    }
-    public Iterable<GroupMessage> getAllGroupMessages(){
-        return groupMessageRepository.findAll();
+    @Override
+    public Optional<GroupMessageDTO> getGroupMsgById(Long id) {
+        return Optional.ofNullable(
+                groupMsgMapper.groupMessagetoGroupMessageDTO(
+                        groupMsgRepository.findById(id).orElse(null)
+                )
+        );
     }
 
-    public GroupMessage createGroupMessage(GroupMessage groupMessage){
-        return groupMessageRepository.save(groupMessage);
+    @Override
+    public GroupMessageDTO createGroupMsg(GroupMessageDTO newGroupMsg) {
+        return groupMsgMapper.groupMessagetoGroupMessageDTO(
+                groupMsgRepository.save(groupMsgMapper.groupMessageDTOtoGroupMessage(newGroupMsg))
+        );
     }
-    public GroupMessage updataGroupMessage(Long id, GroupMessage newGroupMessage){
-        GroupMessage existingGroupMessage = groupMessageRepository.findById(id).orElse(null);
-        if(existingGroupMessage != null){
-            existingGroupMessage.setSender_id(newGroupMessage.getSender_id());
-            existingGroupMessage.setMessageContent(newGroupMessage.getMessageContent());
-            existingGroupMessage.setGroup(newGroupMessage.getGroup());
-            return groupMessageRepository.save(existingGroupMessage);
+
+    @Override
+    public List<GroupMessageDTO> getAllGroupMsg() {
+        List<GroupMessage> groupMsg = (List<GroupMessage>) groupMsgRepository.findAll();
+        return groupMsg.stream()
+                .map(groupMsgMapper::groupMessagetoGroupMessageDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<GroupMessageDTO> deleteGroupMsgById(Long id) {
+        groupMsgRepository.deleteById(id);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<GroupMessageDTO> updateGroupMsgNameById(Long id, GroupMessageDTO updatedGroupMsgDTO) {
+        Optional<GroupMessage> optionalGroupMsg = groupMsgRepository.findById(id);
+        if (optionalGroupMsg.isEmpty()) {
+            return Optional.empty();
         }
-        return existingGroupMessage;
-    }
-    public void deleteGroupMessage(Long id){
-        groupMessageRepository.deleteById(id);
+        GroupMessage groupMessage = optionalGroupMsg.get();
+        groupMessage.setMessageContent(updatedGroupMsgDTO.getMessageContent());
+        GroupMessage updatedGroupMsg = groupMsgRepository.save(groupMessage);
+        return Optional.of(groupMsgMapper.groupMessagetoGroupMessageDTO(updatedGroupMsg));
     }
 }

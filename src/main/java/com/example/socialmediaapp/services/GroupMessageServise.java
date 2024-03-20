@@ -1,15 +1,18 @@
 package com.example.socialmediaapp.services;
 
+import com.example.socialmediaapp.dto.GroupDTO;
+import com.example.socialmediaapp.dto.GroupMessageDTO;
 import com.example.socialmediaapp.entities.Group;
 import com.example.socialmediaapp.entities.GroupMessage;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroupMessageServise {
-    public GroupMessage getGroupMessageById(Long id);
-    public Iterable<GroupMessage> getAllGroupMessages();
+    Optional<GroupMessageDTO> getGroupMsgById(Long id);
+    GroupMessageDTO createGroupMsg(GroupMessageDTO newGroupMsg);
 
-    public GroupMessage createGroupMessage(GroupMessage groupMessage);
-    public GroupMessage updataGroupMessage(Long id, Group newGroupMessage);
-    public void deleteGroupMessage(Long id);
+    List<GroupMessageDTO> getAllGroupMsg();
+    Optional<GroupMessageDTO> deleteGroupMsgById(Long id);
+    Optional<GroupMessageDTO> updateGroupMsgNameById(Long id, GroupMessageDTO updatedGroupMsgDTO);
 }

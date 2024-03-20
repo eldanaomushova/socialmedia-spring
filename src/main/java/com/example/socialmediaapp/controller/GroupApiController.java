@@ -21,8 +21,8 @@ public class GroupApiController {
     private final GroupRepository groupRepository;
     @GetMapping
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
-        List<GroupDTO> books = groupServise.getAllGroupsOfUser();
-        return ResponseEntity.ok(books);
+        List<GroupDTO> groups = groupServise.getAllGroupsOfUser();
+        return ResponseEntity.ok(groups);
     }
     @GetMapping("/{id}")
     public GroupDTO getGroup(@PathVariable Long id) {
@@ -40,8 +40,8 @@ public class GroupApiController {
                 .body(savedGroup);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<GroupDTO> updateGroup(@PathVariable Long id, @RequestBody GroupDTO updatedGroupDTO) {
-        Optional<GroupDTO> updatedGroupOptional = groupServise.updateGroupNameById(id, updatedGroupDTO);
+    public ResponseEntity<GroupDTO> updateGroup(@PathVariable Long id, @RequestBody GroupDTO updatedGroup) {
+        Optional<GroupDTO> updatedGroupOptional = groupServise.updateGroupNameById(id, updatedGroup);
         if (updatedGroupOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

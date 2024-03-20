@@ -1,28 +1,53 @@
 package com.example.socialmediaapp.services;
 
+import com.example.socialmediaapp.dto.GroupMembersDTO;
 import com.example.socialmediaapp.entities.GroupMembers;
+import com.example.socialmediaapp.entities.GroupMessage;
+import com.example.socialmediaapp.mappers.GroupMembersMapper;
 import com.example.socialmediaapp.repositories.GroupMembersRepository;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
-@NoArgsConstructor
-public class GroupMembersServiseJPA {
-    @Autowired
-    public GroupMembersRepository groupMembersRepository;
-    public GroupMembers getGroupMembersById(Long id){
-        return groupMembersRepository.findById(id).orElse(null);
+@AllArgsConstructor
+public class GroupMembersServiseJPA implements GroupMembersServise{
+    private final GroupMembersRepository groupMembersRepository;
+    private final GroupMembersMapper groupMembersMapper;
+
+
+    @Override
+    public Optional<GroupMembersDTO> getGroupMembById(Long id) {
+        return Optional.ofNullable(
+                groupMembersMapper.groupMembersToGroupMembersDTO(
+                        groupMembersRepository.findById(id).orElse(null)
+                )
+        );
     }
 
-    public Iterable<GroupMembers> getAllGroupMembersById(){
-        return groupMembersRepository.findAll();
+    @Override
+    public GroupMembersDTO createGroupMemb(GroupMembersDTO newGroupMemb) {
+        return groupMembersMapper.groupMembersToGroupMembersDTO(
+                groupMembersRepository.save(groupMembersMapper.groupMembersDTOToGroupMembers(newGroupMemb))
+        );
     }
-    public GroupMembers createGroupMembers(GroupMembers groupMembers){
-        return groupMembersRepository.save(groupMembers);
+
+    @Override
+    public List<GroupMembersDTO> getAllGroupMemb() {
+        List<GroupMembers> groupMsg = (List<GroupMembers>) groupMembersRepository.findAll();
+        return groupMsg.stream()
+                .map(groupMembersMapper::groupMembersToGroupMembersDTO)
+                .collect(Collectors.toList());
     }
-    public void deleteGroupMember(Long id){
+
+    @Override
+    public Optional<GroupMembersDTO> deleteGroupMembById(Long id) {
         groupMembersRepository.deleteById(id);
+        return Optional.empty();
     }
+
 
 }

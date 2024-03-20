@@ -23,3 +23,21 @@ public class Group {
     private User username;
 
 }
+
+
+//public class User {
+//    @Id
+//    @EqualsAndHashCode.Include
+//    @GeneratedValue
+//    private Long id;
+//    private String username;
+//    @NotNull
+//    @NotBlank
+//    @Column(nullable = false)
+//    private String email;
+//    private String password;
+//
+//    @OneToMany(mappedBy = "username", fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private List<Group> groupSet;
+//}
