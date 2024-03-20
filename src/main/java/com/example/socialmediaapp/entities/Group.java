@@ -18,9 +18,8 @@ public class Group {
     private Long id;
     private String groupName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "creator_user_id")
-    @JsonIgnore
     private User username;
 
 }

@@ -42,8 +42,6 @@ public class UserServiceJPA implements UserService {
         if (pageable.getPageSize()>1000) {
             pageable = PageRequest.of(pageable.getPageNumber(), 1000, pageable.getSort());
         }
-
-
         return userRepository.findAll(pageable).map(userMapper::userToUserDto);
     }
 

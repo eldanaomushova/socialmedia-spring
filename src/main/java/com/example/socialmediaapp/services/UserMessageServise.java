@@ -13,5 +13,6 @@ public interface UserMessageServise {
 
     List<UserMessageDTO> getAllUserMsg();
     Optional<UserMessageDTO> deleteMsgById(Long id);
-    Optional<UserMessageDTO> updateMsgById(Long id);
+
+    Optional<UserMessageDTO> updateMsgById(Long id, UserMessageDTO updatedUserMsgDTO);
 }

@@ -5,7 +5,6 @@ import com.example.socialmediaapp.entities.UserMessage;
 import com.example.socialmediaapp.mappers.UserMessageMapper;
 import com.example.socialmediaapp.repositories.UserMessageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +43,13 @@ public class UserMessageServiseJPA implements UserMessageServise{
         return Optional.empty();
     }
     @Override
-    public Optional<UserMessageDTO> updateMsgById(Long id) {
-        return Optional.empty();
-    }
-}
+    public Optional<UserMessageDTO> updateMsgById(Long id, UserMessageDTO updatedUserMsgDTO) {
+        Optional<UserMessage> optionalUserMsg = userMessageRepository.findById(id);
+        if (optionalUserMsg.isEmpty()) {
+            return Optional.empty();
+        }
+        UserMessage userMsg = optionalUserMsg.get();
+        userMsg.setMessageContent(updatedUserMsgDTO.getMessageContent());
+        UserMessage updatedUserMessage = userMessageRepository.save(userMsg);
+        return Optional.of(userMessageMapper.userMessagetoUserMessageDTO(updatedUserMessage));
+    }}

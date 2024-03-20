@@ -60,4 +60,13 @@ public class UserMessagesApiController {
         UserMessage savedUserMsg = userMessageRepository.save(existingUserMsg);
         return ResponseEntity.ok(savedUserMsg);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserMessageDTO> updateUserMsg(@PathVariable Long id, @RequestBody UserMessageDTO updatedUserMsgDTO) {
+        Optional<UserMessageDTO> updatedUserMsgOptional = userMessageServise.updateMsgById(id, updatedUserMsgDTO);
+        if (updatedUserMsgOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedUserMsgOptional.get());
+    }
 }

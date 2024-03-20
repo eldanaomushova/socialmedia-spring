@@ -21,5 +21,6 @@ public class UserMessage {
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver_id;
+
     private String messageContent;
 }

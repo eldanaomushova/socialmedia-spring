@@ -2,6 +2,7 @@ package com.example.socialmediaapp.services;
 
 import com.example.socialmediaapp.dto.GroupDTO;
 import com.example.socialmediaapp.entities.Group;
+import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.mappers.GroupMapper;
 import com.example.socialmediaapp.repositories.GroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,13 @@ public class GroupServiceJPA implements GroupServise{
 
     @Override
     public Optional<GroupDTO> updateGroupNameById(Long id, GroupDTO updatedGroupDTO) {
-        return Optional.empty();
+        Optional<Group> optionalUser = groupRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            return Optional.empty();
+        }
+        Group group = optionalUser.get();
+        group.setGroupName(updatedGroupDTO.getGroupName());
+        Group updatedGroup = groupRepository.save(group);
+        return Optional.of(groupMapper.groupToGroupDTO(updatedGroup));
     }
 }
