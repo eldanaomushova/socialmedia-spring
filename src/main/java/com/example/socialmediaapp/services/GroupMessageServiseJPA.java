@@ -49,7 +49,7 @@ public class GroupMessageServiseJPA implements GroupMessageServise {
     }
 
     @Override
-    public Optional<GroupMessageDTO> updateGroupMsgNameById(Long id, GroupMessageDTO updatedGroupMsgDTO) {
+    public Optional<GroupMessageDTO> updateGroupMsgById(Long id, GroupMessageDTO updatedGroupMsgDTO) {
         Optional<GroupMessage> optionalGroupMsg = groupMsgRepository.findById(id);
         if (optionalGroupMsg.isEmpty()) {
             return Optional.empty();

@@ -1,7 +1,6 @@
 package com.example.socialmediaapp.dto;
 
 import com.example.socialmediaapp.entities.User;
-import jakarta.persistence.*;
 import lombok.*;
 
 @Builder

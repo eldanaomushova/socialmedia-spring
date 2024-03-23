@@ -14,5 +14,5 @@ public interface GroupMessageServise {
 
     List<GroupMessageDTO> getAllGroupMsg();
     Optional<GroupMessageDTO> deleteGroupMsgById(Long id);
-    Optional<GroupMessageDTO> updateGroupMsgNameById(Long id, GroupMessageDTO updatedGroupMsgDTO);
+    Optional<GroupMessageDTO> updateGroupMsgById(Long id, GroupMessageDTO updatedGroupMsgDTO);
 }

@@ -40,7 +40,7 @@ public class GroupMsgApiController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<GroupMessageDTO> updateGroupMsg(@PathVariable Long id, @RequestBody GroupMessageDTO updatedGroupMsg) {
-        Optional<GroupMessageDTO> updatedGroupMsgOptional = groupMessageServise.updateGroupMsgNameById(id, updatedGroupMsg);
+        Optional<GroupMessageDTO> updatedGroupMsgOptional = groupMessageServise.updateGroupMsgById(id, updatedGroupMsg);
         if (updatedGroupMsgOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

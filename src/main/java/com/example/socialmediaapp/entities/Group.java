@@ -1,6 +1,5 @@
 package com.example.socialmediaapp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
