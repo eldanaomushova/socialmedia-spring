@@ -20,7 +20,7 @@ class UserRepositoryTest {
 
     @Test
     @Transactional
-    void getAllPublishers() {
+    void getAllUsers() {
         List<User> users = (List<User>) userRepository.findAll();
         User x = users.get(0);
 
@@ -30,7 +30,6 @@ class UserRepositoryTest {
 
         userRepository.save(x);
         System.out.println(x.getUsername());
-        System.out.println("size: " + x.getGroupSet().size());
 
     }
     @Test
