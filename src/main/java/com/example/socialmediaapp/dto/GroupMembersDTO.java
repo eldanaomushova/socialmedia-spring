@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupMembersDTO {
     private Long id;
-    private Group group;
-    private User user;
+    private Group groupId;
+    private String groupName;
+    private User userId;
+    private String userName;
 }

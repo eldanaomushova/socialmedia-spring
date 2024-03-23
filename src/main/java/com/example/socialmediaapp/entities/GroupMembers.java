@@ -17,13 +17,19 @@ import java.security.Timestamp;
 public class GroupMembers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "numb_of_groupmemb")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group group;
+    private Group groupId;
+
+    private String groupName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
+    private String userName;
+
 }
+

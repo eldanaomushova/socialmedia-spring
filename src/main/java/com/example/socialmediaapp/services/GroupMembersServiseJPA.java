@@ -1,6 +1,7 @@
 package com.example.socialmediaapp.services;
 
 import com.example.socialmediaapp.dto.GroupMembersDTO;
+import com.example.socialmediaapp.entities.Group;
 import com.example.socialmediaapp.entities.GroupMembers;
 import com.example.socialmediaapp.entities.GroupMessage;
 import com.example.socialmediaapp.mappers.GroupMembersMapper;
@@ -21,11 +22,12 @@ public class GroupMembersServiseJPA implements GroupMembersServise{
 
     @Override
     public Optional<GroupMembersDTO> getGroupMembById(Long id) {
-        return Optional.ofNullable(
-                groupMembersMapper.groupMembersToGroupMembersDTO(
-                        groupMembersRepository.findById(id).orElse(null)
-                )
-        );
+        Optional<GroupMembers> optionalGroupMembers = groupMembersRepository.findById(id);
+        if (optionalGroupMembers.isPresent()) {
+            return Optional.of(groupMembersMapper.groupMembersToGroupMembersDTO(optionalGroupMembers.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

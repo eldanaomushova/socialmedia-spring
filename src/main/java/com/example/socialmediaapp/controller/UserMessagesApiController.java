@@ -23,8 +23,8 @@ public class UserMessagesApiController {
     private final UserMessageRepository userMessageRepository;
     @GetMapping
     public ResponseEntity<List<UserMessageDTO>> getAllUserMsg() {
-        List<UserMessageDTO> books = userMessageServise.getAllUserMsg();
-        return ResponseEntity.ok(books);
+        List<UserMessageDTO> userMsgDTO = userMessageServise.getAllUserMsg();
+        return ResponseEntity.ok(userMsgDTO);
     }
     @PostMapping()
     public ResponseEntity<UserMessageDTO> createUserMsg(@Validated @RequestBody UserMessageDTO newUserMsg) {

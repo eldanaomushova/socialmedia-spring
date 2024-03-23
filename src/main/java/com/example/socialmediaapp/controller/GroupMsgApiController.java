@@ -20,8 +20,8 @@ public class GroupMsgApiController {
     private final GroupMessageRepository groupMessageRepository;
     @GetMapping
     public ResponseEntity<List<GroupMessageDTO>> getAllGroupMsg() {
-        List<GroupMessageDTO> groupMemb = groupMessageServise.getAllGroupMsg();
-        return ResponseEntity.ok(groupMemb);
+        List<GroupMessageDTO> groupMsgDTO = groupMessageServise.getAllGroupMsg();
+        return ResponseEntity.ok(groupMsgDTO);
     }
     @GetMapping("/{id}")
     public GroupMessageDTO getGroupMsg(@PathVariable Long id) {

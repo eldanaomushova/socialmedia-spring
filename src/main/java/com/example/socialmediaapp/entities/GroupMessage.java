@@ -20,10 +20,12 @@ public class GroupMessage {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+    private String groupName;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender_id;
+    private String senderName;
 
     private String messageContent;
 }

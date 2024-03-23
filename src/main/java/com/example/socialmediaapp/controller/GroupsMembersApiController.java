@@ -17,11 +17,11 @@ public class GroupsMembersApiController {
     private final GroupMembersServise groupMembersServise;
     @GetMapping
     public ResponseEntity<List<GroupMembersDTO>> getAllGroupMemb() {
-        List<GroupMembersDTO> books = groupMembersServise.getAllGroupMemb();
-        return ResponseEntity.ok(books);
+        List<GroupMembersDTO> groupMembDTO = groupMembersServise.getAllGroupMemb();
+        return ResponseEntity.ok(groupMembDTO);
     }
     @GetMapping("/{id}")
-    public GroupMembersDTO getGroupMsg(@PathVariable Long id) {
+    public GroupMembersDTO getGroupMemb(@PathVariable Long id) {
         return groupMembersServise.getGroupMembById(id)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Resource with id:%d Not Found", id)

@@ -17,17 +17,15 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @GeneratedValue
     private Long id;
     private String username;
     @NotNull
     @NotBlank
-    @Column(nullable = false)
     private String email;
     private String password;
-
-    @OneToMany(mappedBy = "username", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator")
     @JsonIgnore
     private List<Group> groupSet;
 }

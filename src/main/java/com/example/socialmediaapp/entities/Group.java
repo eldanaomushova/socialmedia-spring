@@ -15,29 +15,14 @@ public class Group {
     @Id
     @GeneratedValue
     @EqualsAndHashCode.Include
+    @Column(name = "group_id")
     private Long id;
     private String groupName;
 
     @ManyToOne
-    @JoinColumn(name = "creator_user_id")
-    private User username;
+    @JoinColumn(name = "creator_userId")
+    private User creator;
+
+    private String creatorUserName;
 
 }
-
-
-//public class User {
-//    @Id
-//    @EqualsAndHashCode.Include
-//    @GeneratedValue
-//    private Long id;
-//    private String username;
-//    @NotNull
-//    @NotBlank
-//    @Column(nullable = false)
-//    private String email;
-//    private String password;
-//
-//    @OneToMany(mappedBy = "username", fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private List<Group> groupSet;
-//}

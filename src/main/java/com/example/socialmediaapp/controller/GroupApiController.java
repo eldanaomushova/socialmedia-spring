@@ -21,8 +21,8 @@ public class GroupApiController {
     private final GroupRepository groupRepository;
     @GetMapping
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
-        List<GroupDTO> groups = groupServise.getAllGroupsOfUser();
-        return ResponseEntity.ok(groups);
+        List<GroupDTO> groupsDTO = groupServise.getAllGroupsOfUser();
+        return ResponseEntity.ok(groupsDTO);
     }
     @GetMapping("/{id}")
     public GroupDTO getGroup(@PathVariable Long id) {

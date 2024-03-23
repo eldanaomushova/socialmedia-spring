@@ -19,7 +19,6 @@ import java.util.Optional;
 public class UserServiceJPA implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final GroupRepository groupRepository;
 
     @Override
     public Optional<UserDTO> getUserById(Long id) {

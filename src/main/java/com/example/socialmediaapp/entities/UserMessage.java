@@ -18,9 +18,12 @@ public class UserMessage {
     @JoinColumn(name = "sender_id")
     private User sender_id;
 
+    private String senderName;
+
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver_id;
+    private String receiverName;
 
     private String messageContent;
 }

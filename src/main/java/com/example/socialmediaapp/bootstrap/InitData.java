@@ -36,22 +36,36 @@ public class InitData implements CommandLineRunner {
                 .build();
         userRepository.saveAll(List.of(user1, user2));
         generateUsers(10000);
-//        Group group1 = Group.builder()
-//                .groupName("students information")
-//                .build();
-//        groupRepository.saveAll(List.of(group1));
-//        UserMessage userMessage = UserMessage.builder()
-//                .messageContent("Its me, hi")
-//                .build();
-//        userMessageRepository.save(userMessage);
-//        GroupMembers groupMembers1 = GroupMembers.builder()
-//                .build();
-//        groupMembersRepository.saveAll(List.of(groupMembers1));
-//        GroupMessage groupMessage = GroupMessage.builder()
-//                .messageContent("hi everyone")
-//                .build();
-//        groupMessageRepository.saveAll(List.of(groupMessage));
-//
+        Group group1 = Group.builder()
+                .groupName("students information")
+                .creator(user1)
+                .creatorUserName(user1.getUsername())
+                .build();
+        groupRepository.saveAll(List.of(group1));
+        UserMessage userMessage = UserMessage.builder()
+                .messageContent("Its me, hi")
+                .sender_id(user2)
+                .senderName(user2.getUsername())
+                .receiver_id(user1)
+                .receiverName(user1.getUsername())
+                .build();
+        userMessageRepository.save(userMessage);
+        GroupMembers groupMembers1 = GroupMembers.builder()
+                .groupId(group1)
+                .groupName(group1.getGroupName())
+                .userId(user1)
+                .userName(user1.getUsername())
+                .build();
+        groupMembersRepository.saveAll(List.of(groupMembers1));
+        GroupMessage groupMessage = GroupMessage.builder()
+                .messageContent("hi everyone")
+                .sender_id(user2)
+                .senderName(user2.getUsername())
+                .group(group1)
+                .groupName(group1.getGroupName())
+                .build();
+        groupMessageRepository.saveAll(List.of(groupMessage));
+
     }
     public void generateUsers(int numberOfUsers) {
 
