@@ -25,7 +25,5 @@ public class User {
     @NotBlank
     private String email;
     private String password;
-//    @OneToMany(mappedBy = "creator")
-//    @JsonIgnore
-//    private List<Group> groupSet;
+
 }

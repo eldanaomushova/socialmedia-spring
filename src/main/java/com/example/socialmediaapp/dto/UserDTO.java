@@ -23,5 +23,4 @@ public class UserDTO {
     @NotBlank
     private String email;
     private String password;
-    private List<Group> groupSet;
 }

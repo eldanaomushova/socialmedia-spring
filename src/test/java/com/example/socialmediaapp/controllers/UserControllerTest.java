@@ -12,28 +12,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-
-//import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -94,10 +80,12 @@ public class UserControllerTest {
 
     @Test
     public void deleteUserByIdTest() throws Exception {
-        // Perform the delete request
-        mockMvc.perform(delete("/api/v1/users/{id}", 5L))
+        long userId = 5L;
+        doThrow(IllegalStateException.class).when(userService).deleteById(userId);
+        mockMvc.perform(delete("/api/v1/users/{id}", userId))
                 .andExpect(status().isNoContent());
     }
+
     @Test
     public void updateUserTest() throws Exception {
         User updatedUser = new User(2L, "username2", "email2@gmail.com", "password2");
