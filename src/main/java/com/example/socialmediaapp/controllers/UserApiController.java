@@ -1,7 +1,6 @@
 package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.UserDTO;
-import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.repositories.UserRepository;
 import com.example.socialmediaapp.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
 import java.util.Optional;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-public class UserApiController {
+public class UserApiController extends ResponseEntityExceptionHandler {
     private final UserService userService;
     private final UserRepository userRepository;
 
@@ -53,11 +54,13 @@ public class UserApiController {
                         String.format("Resource with id:%d Not Found", id)
                 ));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
     @PatchMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO){
         Optional<UserDTO> updatedUserOptional = userService.updateById(id, updatedUserDTO);
@@ -67,6 +70,7 @@ public class UserApiController {
 
         return ResponseEntity.ok(updatedUserOptional.get());
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser2(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
         Optional<UserDTO> updatedUserOptional = userService.updateById(id, updatedUserDTO);
@@ -75,5 +79,13 @@ public class UserApiController {
         }
 
         return ResponseEntity.ok(updatedUserOptional.get());
+    }
+
+    // Exception handling
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
     }
 }

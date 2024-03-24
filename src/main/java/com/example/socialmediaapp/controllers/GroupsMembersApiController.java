@@ -2,6 +2,7 @@ package com.example.socialmediaapp.controllers;
 import com.example.socialmediaapp.dto.GroupMembersDTO;
 import com.example.socialmediaapp.services.GroupMembersServise;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,20 @@ public class GroupsMembersApiController {
         return ResponseEntity.ok(groupMembDTO);
     }
     @GetMapping("/{id}")
-    public GroupMembersDTO getGroupMemb(@PathVariable Long id) {
-        return groupMembersServise.getGroupMembById(id)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("Resource with id:%d Not Found", id)
-                ));
+    public ResponseEntity<?> getGroupMemb(@PathVariable Long id) {
+        try {
+            GroupMembersDTO groupMembersDTO = groupMembersServise.getGroupMembById(id)
+                    .orElseThrow(() -> new NotFoundException(
+                            String.format("Resource with id:%d Not Found", id)
+                    ));
+            return ResponseEntity.ok(groupMembersDTO);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
     }
+
     @PostMapping()
     public ResponseEntity<GroupMembersDTO> createGroupMemb(@Validated @RequestBody GroupMembersDTO newGroupMemb) {
         newGroupMemb.setId(null);
