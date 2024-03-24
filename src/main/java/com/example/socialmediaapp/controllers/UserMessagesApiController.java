@@ -46,17 +46,13 @@ public class UserMessagesApiController {
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<UserMessage> updateUserMsg(@PathVariable Long id, @RequestBody UserMessage updatedUserMsg){
-        Optional<UserMessage> optionalUserMsg = userMessageRepository.findById(id);
-        if(optionalUserMsg.isEmpty()){
+    public ResponseEntity<UserMessageDTO> updateUserMsg2(@PathVariable Long id, @RequestBody UserMessageDTO updatedUserMsgDTO){
+        Optional<UserMessageDTO> updatedUserMsgOptional = userMessageServise.updateMsgById(id, updatedUserMsgDTO);
+        if (updatedUserMsgOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        UserMessage existingUserMsg = optionalUserMsg.get();
-        if(updatedUserMsg.getMessageContent()!=null){
-            existingUserMsg.setMessageContent((updatedUserMsg.getMessageContent()));
-        }
-        UserMessage savedUserMsg = userMessageRepository.save(existingUserMsg);
-        return ResponseEntity.ok(savedUserMsg);
+
+        return ResponseEntity.ok(updatedUserMsgOptional.get());
     }
     @PutMapping("/{id}")
     public ResponseEntity<UserMessageDTO> updateUserMsg(@PathVariable Long id, @RequestBody UserMessageDTO updatedUserMsgDTO) {

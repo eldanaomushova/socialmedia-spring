@@ -2,15 +2,11 @@ package com.example.socialmediaapp.services;
 
 import com.example.socialmediaapp.dto.GroupDTO;
 import com.example.socialmediaapp.entities.Group;
-import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.mappers.GroupMapper;
 import com.example.socialmediaapp.repositories.GroupRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

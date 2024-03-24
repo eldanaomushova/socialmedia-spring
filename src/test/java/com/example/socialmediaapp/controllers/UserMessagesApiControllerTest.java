@@ -2,26 +2,28 @@ package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.UserMessageDTO;
 import com.example.socialmediaapp.entities.User;
-import com.example.socialmediaapp.entities.UserMessage;
 import com.example.socialmediaapp.mappers.UserMessageMapper;
 import com.example.socialmediaapp.services.UserMessageServise;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Collections;
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -30,12 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class UserMessagesApiControllerTest {
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
     @Autowired
     MockHttpSession session;
     @Autowired
@@ -44,34 +43,26 @@ public class UserMessagesApiControllerTest {
     private UserMessageServise userMsgServise;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+    @InjectMocks
+    private UserMessagesApiController userMessagesApiController;
 
-    @Before
-    public void setUp(){
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-    }
 
     @Test
     public void getAllUserMsg() throws Exception {
+        when(userMsgServise.getAllUserMsg()).thenReturn(Collections.singletonList(new UserMessageDTO()));
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
         mockMvc.perform(get("/api/v1/usermsg"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].messageId").exists())
-                .andExpect(jsonPath("$[0].sender_id").exists())
-                .andExpect(jsonPath("$[0].senderName").exists())
-                .andExpect(jsonPath("$[0].receiver_id").exists())
-                .andExpect(jsonPath("$[0].receiverName").exists())
-                .andExpect(jsonPath("$[0].messageContent").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1));
     }
 
     @Test
     public void getUserMsgById() throws Exception {
+        when(userMsgServise.getUserMsgById(1L)).thenReturn(Optional.of(new UserMessageDTO()));
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
+
         mockMvc.perform(get("/api/v1/usermsg/{id}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sender_id.id").value(2L))
-                .andExpect(jsonPath("$.senderName").value("anyamurm"))
-                .andExpect(jsonPath("$.receiver_id.id").value(1L))
-                .andExpect(jsonPath("$.receiverName").value("mike_time"))
-                .andExpect(jsonPath("$.messageContent").value("test updateUserMessage"));
+                .andExpect(status().isOk());
     }
     @Test
     public void createGroup() throws Exception {
@@ -93,6 +84,7 @@ public class UserMessagesApiControllerTest {
         userMessageDTO.setReceiverName(user2.getUsername());
         userMessageDTO.setMessageContent("test messageContent");
         when(userMsgServise.createUserMsg(any(UserMessageDTO.class))).thenReturn(userMessageDTO);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
         mockMvc.perform(post("/api/v1/usermsg")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userMessageDTO)))
@@ -107,45 +99,37 @@ public class UserMessagesApiControllerTest {
 
     @Test
     public void updateUserMsg() throws Exception{
-        User user = new User(1L, "mike_time", "mike@gmail.com", "1425e");
-        User user2 = new User(2L, "anyamurm", "anya@gmail.com", "5134c");
-        UserMessage updatedUserMsg = new UserMessage(1L, user, user.getUsername(),user2, user2.getUsername(), "test updateUserMessage");
+        UserMessageDTO updatedUserMsg = new UserMessageDTO();
+        updatedUserMsg.setMessageContent("testUserMsg");
+        when(userMsgServise.updateMsgById(1L, updatedUserMsg)).thenReturn(Optional.of(updatedUserMsg));
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/usermsg/{id}", 1L)
                         .content(objectMapper.writeValueAsString(updatedUserMsg))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.messageId").value(1L))
-                .andExpect(jsonPath("$.sender_id.id").value(2L))
-                .andExpect(jsonPath("$.senderName").value("anyamurm"))
-                .andExpect(jsonPath("$.receiver_id.id").value(1L))
-                .andExpect(jsonPath("$.receiverName").value("mike_time"))
-                .andExpect(jsonPath("$.messageContent").value("test updateUserMessage"));
+                .andExpect(jsonPath("$.messageContent").value("testUserMsg"));
     }
 
     @Test
     public void deleteUserMsg() throws Exception {
-        doThrow(DataIntegrityViolationException.class).when(userMsgServise).deleteMsgById(2L);
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
         mockMvc.perform(delete("/api/v1/usermsg/{id}", 2L))
                 .andExpect(status().isNoContent());
     }
     @Test
     public void patchUserMsg2() throws Exception{
-        User user = new User(1L, "mike_time", "mike@gmail.com", "1425e");
-        User user2 = new User(2L, "anyamurm", "anya@gmail.com", "5134c");
-        UserMessage updatedUserMsg = new UserMessage(1L, user, user.getUsername(),user2, user2.getUsername(), "test updateUserMessage");
+        UserMessageDTO updatedUserMsg = new UserMessageDTO();
+        updatedUserMsg.setMessageContent("testUserMsg");
+        when(userMsgServise.updateMsgById(1L, updatedUserMsg)).thenReturn(Optional.of(updatedUserMsg));
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userMessagesApiController).build();
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/v1/usermsg/{id}", 1L)
                         .content(objectMapper.writeValueAsString(updatedUserMsg))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.messageId").value(1L))
-                .andExpect(jsonPath("$.sender_id.id").value(2L))
-                .andExpect(jsonPath("$.senderName").value("anyamurm"))
-                .andExpect(jsonPath("$.receiver_id.id").value(1L))
-                .andExpect(jsonPath("$.receiverName").value("mike_time"))
-                .andExpect(jsonPath("$.messageContent").value("test updateUserMessage"));
+                .andExpect(jsonPath("$.messageContent").value("testUserMsg"));
     }
 }

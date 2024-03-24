@@ -1,10 +1,7 @@
 package com.example.socialmediaapp.services;
 
 import com.example.socialmediaapp.dto.GroupDTO;
-import com.example.socialmediaapp.entities.Group;
-import com.example.socialmediaapp.repositories.GroupRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 

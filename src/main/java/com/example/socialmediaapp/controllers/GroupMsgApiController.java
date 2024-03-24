@@ -53,16 +53,12 @@ public class GroupMsgApiController {
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<GroupMessage> updateGroupMsg2(@PathVariable Long id, @RequestBody GroupMessage updatedGroupMsg){
-        Optional<GroupMessage> optionalGroupMsg = groupMessageRepository.findById(id);
-        if(optionalGroupMsg.isEmpty()){
+    public ResponseEntity<GroupMessageDTO> updateGroupMsg2(@PathVariable Long id, @RequestBody GroupMessageDTO updatedGroupMsg){
+        Optional<GroupMessageDTO> updatedGroupMsgOptional = groupMessageServise.updateGroupMsgById(id, updatedGroupMsg);
+        if (updatedGroupMsgOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        GroupMessage existingGroupMsg = optionalGroupMsg.get();
-        if(updatedGroupMsg.getMessageContent()!=null){
-            existingGroupMsg.setMessageContent((updatedGroupMsg.getMessageContent()));
-        }
-        GroupMessage savedGroupMsg = groupMessageRepository.save(existingGroupMsg);
-        return ResponseEntity.ok(savedGroupMsg);
+
+        return ResponseEntity.ok(updatedGroupMsgOptional.get());
     }
 }

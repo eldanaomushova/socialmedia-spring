@@ -25,6 +25,8 @@ public class UserApiController {
 
     @GetMapping
     public Page<UserDTO> getUsers(
+            @PathVariable
+            @RequestParam
             @PageableDefault(
                     size = 25,
                     sort = {"email", "username"},
@@ -32,7 +34,6 @@ public class UserApiController {
             Pageable pageable
     ) {
 
-        System.out.println("pageable = " + pageable);
         return userService.getAllUsers(pageable);
     }
 
@@ -58,20 +59,16 @@ public class UserApiController {
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser){
-        Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isEmpty()){
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO){
+        Optional<UserDTO> updatedUserOptional = userService.updateById(id, updatedUserDTO);
+        if (updatedUserOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        User existingUser = optionalUser.get();
-        if(updatedUser.getUsername()!=null){
-            existingUser.setUsername((updatedUser.getUsername()));
-        }
-        User savedUser = userRepository.save(existingUser);
-        return ResponseEntity.ok(savedUser);
+
+        return ResponseEntity.ok(updatedUserOptional.get());
     }
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
+    public ResponseEntity<UserDTO> updateUser2(@PathVariable Long id, @RequestBody UserDTO updatedUserDTO) {
         Optional<UserDTO> updatedUserOptional = userService.updateById(id, updatedUserDTO);
         if (updatedUserOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
