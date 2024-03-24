@@ -26,8 +26,6 @@ public class UserApiController extends ResponseEntityExceptionHandler {
 
     @GetMapping
     public Page<UserDTO> getUsers(
-            @PathVariable
-            @RequestParam
             @PageableDefault(
                     size = 25,
                     sort = {"email", "username"},
