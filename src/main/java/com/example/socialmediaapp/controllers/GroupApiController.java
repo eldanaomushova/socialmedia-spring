@@ -1,11 +1,9 @@
 package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.GroupDTO;
-import com.example.socialmediaapp.entities.Group;
 import com.example.socialmediaapp.repositories.GroupRepository;
 import com.example.socialmediaapp.services.GroupServise;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Component("GroupApiController")
 public class GroupApiController {
     private final GroupServise groupServise;
-    private final GroupRepository groupRepository;
     @GetMapping
     public ResponseEntity<List<GroupDTO>> getAllGroups() {
         List<GroupDTO> groupsDTO = groupServise.getAllGroupsOfUser();
