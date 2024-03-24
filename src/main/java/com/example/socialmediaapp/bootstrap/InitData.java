@@ -69,7 +69,13 @@ public class InitData implements CommandLineRunner {
                 .userId(user1)
                 .userName(user1.getUsername())
                 .build();
-        groupMembersRepository.saveAll(List.of(groupMembers1));
+        GroupMembers groupMembers2 = GroupMembers.builder()
+                .groupId(group1)
+                .groupName(group1.getGroupName())
+                .userId(user2)
+                .userName(user2.getUsername())
+                .build();
+        groupMembersRepository.saveAll(List.of(groupMembers1, groupMembers2));
         GroupMessage groupMessage = GroupMessage.builder()
                 .messageContent("hi everyone")
                 .sender_id(user2)
@@ -77,7 +83,14 @@ public class InitData implements CommandLineRunner {
                 .group(group1)
                 .groupName(group1.getGroupName())
                 .build();
-        groupMessageRepository.saveAll(List.of(groupMessage));
+        GroupMessage groupMessage2 = GroupMessage.builder()
+                .messageContent("What is the next lesson?")
+                .sender_id(user1)
+                .senderName(user1.getUsername())
+                .group(group1)
+                .groupName(group1.getGroupName())
+                .build();
+        groupMessageRepository.saveAll(List.of(groupMessage, groupMessage2));
 
     }
     public void generateUsers(int numberOfUsers) {
