@@ -1,4 +1,4 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

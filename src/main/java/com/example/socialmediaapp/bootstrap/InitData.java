@@ -54,7 +54,15 @@ public class InitData implements CommandLineRunner {
                 .receiver_id(user1)
                 .receiverName(user1.getUsername())
                 .build();
-        userMessageRepository.save(userMessage);
+        UserMessage userMessage2 = UserMessage.builder()
+                .messageContent("Hi, how are you?")
+                .sender_id(user1)
+                .senderName(user1.getUsername())
+                .receiver_id(user2)
+                .receiverName(user2.getUsername())
+                .build();
+
+        userMessageRepository.saveAll(List.of(userMessage, userMessage2));
         GroupMembers groupMembers1 = GroupMembers.builder()
                 .groupId(group1)
                 .groupName(group1.getGroupName())

@@ -1,4 +1,4 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 import com.example.socialmediaapp.dto.GroupMembersDTO;
 import com.example.socialmediaapp.services.GroupMembersServise;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
         import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

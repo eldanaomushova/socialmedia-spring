@@ -103,7 +103,7 @@ public class GroupApiControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.creatorUserName").value("mike_time"));
     }
     @Test
-    public void testDeleteGroupWithCascade() throws Exception {
+    public void deleteById() throws Exception {
         doThrow(DataIntegrityViolationException.class).when(groupServise).deleteGroupById(2L);
         mockMvc.perform(delete("/api/v1/groups/{id}", 2L))
                 .andExpect(status().isNoContent());

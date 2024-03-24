@@ -1,4 +1,4 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 import com.example.socialmediaapp.dto.GroupMessageDTO;
 import com.example.socialmediaapp.entities.GroupMessage;
 import com.example.socialmediaapp.repositories.GroupMessageRepository;

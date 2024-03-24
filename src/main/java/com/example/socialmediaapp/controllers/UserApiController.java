@@ -1,8 +1,7 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.UserDTO;
 import com.example.socialmediaapp.entities.User;
-import com.example.socialmediaapp.mappers.UserMapper;
 import com.example.socialmediaapp.repositories.UserRepository;
 import com.example.socialmediaapp.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

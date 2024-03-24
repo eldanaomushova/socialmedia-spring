@@ -1,8 +1,6 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 
-import com.example.socialmediaapp.dto.UserDTO;
 import com.example.socialmediaapp.dto.UserMessageDTO;
-import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.entities.UserMessage;
 import com.example.socialmediaapp.repositories.UserMessageRepository;
 import com.example.socialmediaapp.services.UserMessageServise;

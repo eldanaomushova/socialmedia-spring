@@ -1,8 +1,7 @@
-package com.example.socialmediaapp.controller;
+package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.GroupDTO;
 import com.example.socialmediaapp.entities.Group;
-import com.example.socialmediaapp.mappers.GroupMapper;
 import com.example.socialmediaapp.repositories.GroupRepository;
 import com.example.socialmediaapp.services.GroupServise;
 import lombok.RequiredArgsConstructor;
