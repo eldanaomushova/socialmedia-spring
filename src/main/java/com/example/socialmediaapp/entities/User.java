@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Data
@@ -25,5 +26,7 @@ public class User {
     @NotBlank
     private String email;
     private String password;
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<UserRole> roles;
 
 }

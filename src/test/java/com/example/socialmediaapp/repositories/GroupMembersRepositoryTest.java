@@ -35,7 +35,7 @@ class GroupMembersRepositoryTest {
     @Test
     void findAll() {
         List<GroupMembers> groupMembersList = (List<GroupMembers>) groupMembersRepository.findAll();
-        assertEquals(1, groupMembersList.size());
+        assertEquals(2, groupMembersList.size());
     }
 
     @AfterEach

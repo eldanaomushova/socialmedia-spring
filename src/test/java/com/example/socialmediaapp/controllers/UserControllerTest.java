@@ -59,19 +59,18 @@ public class UserControllerTest {
     @Test
     public void createUserTest() throws Exception {
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(1L);
         userDTO.setUsername("test username");
-        userDTO.setEmail("test email");
+        userDTO.setEmail("email@gmail.com");
         userDTO.setPassword("test password");
         when(userService.createUser(any(UserDTO.class))).thenReturn(userDTO);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(userApiController).build();
-        mockMvc.perform(post("/api/v1/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.username").value("test username"))
-                .andExpect(jsonPath("$.email").value("test email"))
-                .andExpect(jsonPath("$.password").value("test password"));
+            mockMvc.perform(post("/api/v1/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(userDTO)))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.username").value("test username"))
+                    .andExpect(jsonPath("$.email").value("email@gmail.com"))
+                    .andExpect(jsonPath("$.password").value("test password"));
     }
     @Test
     public void getUsersByIdTest() throws Exception {

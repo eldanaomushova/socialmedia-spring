@@ -17,9 +17,7 @@ import lombok.NoArgsConstructor;
 public class GroupMembersDTO {
     private Long id;
     private Group groupId;
-    @NotBlank(message = "Group name is required")
     private String groupName;
     private User userId;
-    @NotBlank(message = "User name is required")
     private String userName;
 }

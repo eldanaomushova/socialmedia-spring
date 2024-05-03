@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Log4j2
 @Component
@@ -28,11 +29,13 @@ public class InitData implements CommandLineRunner {
                 .email("mike@gmail.com")
                 .password("1425e")
                 .username("mike_time")
+                .roles(Set.of(UserRole.admin))
                 .build();
         User user2 = User.builder()
                 .email("anya@gmail.com")
                 .password("5134c")
                 .username("anyamurm")
+                .roles(Set.of(UserRole.user))
                 .build();
         userRepository.saveAll(List.of(user1, user2));
         generateUsers(10000);

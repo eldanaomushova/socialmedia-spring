@@ -12,9 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@ActiveProfiles("postgres")
 class UserRepositoryTest {
-
     @Autowired
     UserRepository userRepository;
 

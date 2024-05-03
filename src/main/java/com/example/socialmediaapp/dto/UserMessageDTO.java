@@ -14,13 +14,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 public class UserMessageDTO {
     private Long messageId;
-    @NotBlank(message = "sender id is required")
     private User sender_id;
-    @NotBlank(message = "sender name is required")
     private String senderName;
-    @NotBlank(message = "receiver id is required")
     private User receiver_id;
-    @NotBlank(message = "receiver name is required")
     private String receiverName;
     private String messageContent;
 }

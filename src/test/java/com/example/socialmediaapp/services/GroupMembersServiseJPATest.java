@@ -65,7 +65,7 @@ class GroupMembersServiseJPATest {
 
     @Test
     void deleteGroupMembById() {
-        Long groupMemb = 1L;
+        Long groupMemb = 2L;
         assertThrows(DataIntegrityViolationException.class, () -> {
             groupMembersServiseJPA.deleteGroupMembById(groupMemb);
         }, "Deletion should fail due to foreign key constraint violation");

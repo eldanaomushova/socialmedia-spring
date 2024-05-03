@@ -16,13 +16,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 public class GroupMessageDTO {
     private Long id;
-    @NotBlank(message = "Group id is required")
     private Group group;
-    @NotBlank(message = "Group name is required")
     private String groupName;
-    @NotBlank(message = "Sender id is required")
     private User sender_id;
-    @NotBlank(message = "Sender name is required")
     private String senderName;
     private String messageContent;
 }

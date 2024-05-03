@@ -33,7 +33,7 @@ class GroupRepositoryTest {
     @Test
     void findAll() {
         List<Group> groupList = (List<Group>) groupRepository.findAll();
-        assertEquals(1, groupList.size());
+        assertEquals(2, groupList.size());
     }
 
     @AfterEach

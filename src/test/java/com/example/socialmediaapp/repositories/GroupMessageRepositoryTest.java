@@ -34,7 +34,7 @@ class GroupMessageRepositoryTest {
     @Test
     void findAll() {
         List<GroupMessage> groupMessagesList = (List<GroupMessage>) groupMessageRepository.findAll();
-        assertEquals(1, groupMessagesList.size());
+        assertEquals(2, groupMessagesList.size());
     }
 
     @AfterEach

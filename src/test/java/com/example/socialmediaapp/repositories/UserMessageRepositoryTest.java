@@ -33,7 +33,7 @@ class UserMessageRepositoryTest {
     @Test
     void findAll() {
         List<UserMessage> userMessageList = (List<UserMessage>) userMessageRepository.findAll();
-        assertEquals(1, userMessageList.size());
+        assertEquals(2, userMessageList.size());
     }
     @AfterEach
     void tearDown() {
