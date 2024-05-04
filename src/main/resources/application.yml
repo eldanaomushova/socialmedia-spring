@@ -9,4 +9,10 @@ spring:
           git-hub:
             client-id: 47ad5796be4315d91825
             client-secret: c9d79006aefccf898d8fbcaa6fb998dde5f63e12
+          facebook:
+            client-id: 963223915034972
+            client-secret: 8318994e3a3fc2e57c30a372a34826af
+            scope:
+              - email
+              - public_profile
 
