@@ -14,9 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -36,6 +41,7 @@ public class AuthController {
                     .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
                     .refreshToken(refreshToken.getToken())
                     .build();
+
         } else {
             throw new UsernameNotFoundException("invalid user request..!!");
         }
@@ -52,12 +58,10 @@ public class AuthController {
                             .refreshToken(refreshTokenRequestDTO.getToken()).build();
                 }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
     }
-    @GetMapping
-    public Object getCurrentUser(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof CustomUserDetails userDetail) {
-            return new UserDTO(userDetail.user());
-        }
-        return principal;
+
+    @GetMapping()
+    public ResponseEntity<String> sayHello() {
+        return ResponseEntity.ok("Hell OAuth2");
     }
+
 }
