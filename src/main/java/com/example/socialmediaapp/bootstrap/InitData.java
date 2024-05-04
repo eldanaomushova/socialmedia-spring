@@ -2,10 +2,10 @@ package com.example.socialmediaapp.bootstrap;
 
 import com.example.socialmediaapp.entities.*;
 import com.example.socialmediaapp.repositories.*;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,19 +21,20 @@ public class InitData implements CommandLineRunner {
     private final UserMessageRepository userMessageRepository;
     private final GroupMessageRepository groupMessageRepository;
     private final GroupMembersRepository groupMembersRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         log.atWarn().log("Initializing data");
         User user1 = User.builder()
                 .email("mike@gmail.com")
-                .password("1425e")
+                .password(passwordEncoder.encode("1425e"))
                 .username("mike_time")
                 .roles(Set.of(UserRole.admin))
                 .build();
         User user2 = User.builder()
                 .email("anya@gmail.com")
-                .password("5134c")
+                .password(passwordEncoder.encode("5134c"))
                 .username("anyamurm")
                 .roles(Set.of(UserRole.user))
                 .build();
