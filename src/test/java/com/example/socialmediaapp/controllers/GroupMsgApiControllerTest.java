@@ -1,14 +1,12 @@
 package com.example.socialmediaapp.controllers;
 
-import com.example.socialmediaapp.dto.GroupDTO;
 import com.example.socialmediaapp.dto.GroupMessageDTO;
 import com.example.socialmediaapp.entities.Group;
-import com.example.socialmediaapp.entities.GroupMessage;
 import com.example.socialmediaapp.entities.User;
+import com.example.socialmediaapp.entities.UserRole;
 import com.example.socialmediaapp.mappers.GroupMessageMapper;
 import com.example.socialmediaapp.services.GroupMessageServise;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -16,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -73,7 +69,7 @@ public class GroupMsgApiControllerTest {
 
     @Test
     public void createGroupMsg() throws Exception{
-        User user = new User();
+        User user = new User(request.getFirstName(), request.getLastName(), request.getEmail(), UserRole.user);
         user.setId(1L);
         user.setUsername("test username");
         user.setEmail("test email");

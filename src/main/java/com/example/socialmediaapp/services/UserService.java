@@ -18,4 +18,6 @@ public interface UserService {
     Optional<UserDTO> deleteById(Long id);
 
     Optional<UserDTO> updateById(Long id, UserDTO updatedUserDTO);
+
+    public String signUpUser(User appUser);
 }

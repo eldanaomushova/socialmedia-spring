@@ -1,12 +1,11 @@
 package com.example.socialmediaapp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -26,7 +25,23 @@ public class User {
     @NotBlank
     private String email;
     private String password;
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Set<UserRole> roles;
+    private Boolean locked = false;
+    private Boolean enabled = false;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Set<UserRole> roles = new HashSet<>();
+    public User(String username,
+                String email,
+                String password,
+                UserRole appUserRole) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = new HashSet<>();
+        this.roles.add(appUserRole);
+    }
+
 
 }

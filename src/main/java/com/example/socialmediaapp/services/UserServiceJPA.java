@@ -3,22 +3,27 @@ package com.example.socialmediaapp.services;
 import com.example.socialmediaapp.dto.UserDTO;
 import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.mappers.UserMapper;
-import com.example.socialmediaapp.repositories.GroupRepository;
 import com.example.socialmediaapp.repositories.UserRepository;
+import com.example.socialmediaapp.token.confirmation.ConfirmationToken;
+import com.example.socialmediaapp.token.confirmation.ConfirmationTokenService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceJPA implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Override
     public Optional<UserDTO> getUserById(Long id) {
@@ -28,7 +33,6 @@ public class UserServiceJPA implements UserService {
                 )
         );
     }
-
     @Override
     public UserDTO createUser(UserDTO newUser) {
         return userMapper.userToUserDto(
@@ -64,21 +68,29 @@ public class UserServiceJPA implements UserService {
         return Optional.of(userMapper.userToUserDto(updatedUser));
     }
 
-    private Pageable getPageable(Integer page, Integer size) {
-        if (page == null || page < 0)
-            page = 0;
-
-        if (size == null || size <= 0)
-            size = 25;
-
-        if (size > 1000)
-            size = 1000;
-
-        Sort sort = Sort.by(
-                Sort.Order.desc("email"),
-                Sort.Order.asc("username")
+    @Override
+    public String signUpUser(User appUser) {
+        boolean userExists = userRepository
+                .findByEmail(appUser.getEmail())
+                .isPresent();
+        if (userExists) {
+            throw new IllegalStateException("email already taken");
+        }
+        String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
+        appUser.setPassword(encodedPassword);
+        userRepository.save(appUser);
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                appUser
         );
-
-        return PageRequest.of(page, size, sort);
+        confirmationTokenService.saveConfirmationToken(
+                confirmationToken);
+        return token;
+    }
+    public int enableAppUser(String email) {
+        return userRepository.enableAppUser(email);
     }
 }

@@ -5,7 +5,7 @@ import com.example.socialmediaapp.dto.AuthRequestDTO;
 import com.example.socialmediaapp.dto.JwtResponseDTO;
 import com.example.socialmediaapp.dto.RefreshTokenRequestDTO;
 import com.example.socialmediaapp.dto.UserDTO;
-import com.example.socialmediaapp.services.JwtService;
+import com.example.socialmediaapp.token.JwtService;
 import com.example.socialmediaapp.services.RefreshTokenService;
 import com.example.socialmediaapp.token.RefreshToken;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +39,7 @@ public class AuthController {
             throw new UsernameNotFoundException("invalid user request..!!");
         }
     }
+
     @PostMapping("/refreshToken")
     public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())

@@ -2,6 +2,7 @@ package com.example.socialmediaapp.controllers;
 
 import com.example.socialmediaapp.dto.GroupDTO;
 import com.example.socialmediaapp.entities.User;
+import com.example.socialmediaapp.entities.UserRole;
 import com.example.socialmediaapp.mappers.GroupMapper;
 import com.example.socialmediaapp.services.GroupServise;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,7 +67,7 @@ public class GroupApiControllerTest {
     }
     @Test
     public void createGroup() throws Exception {
-        User user = new User();
+        User user = new User(request.getFirstName(), request.getLastName(), request.getEmail(), UserRole.user);
         user.setId(1L);
         user.setUsername("test username");
         user.setEmail("test email");
