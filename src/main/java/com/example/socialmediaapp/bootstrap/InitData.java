@@ -33,9 +33,9 @@ public class InitData implements CommandLineRunner {
                 .roles(Set.of(UserRole.admin))
                 .build();
         User user2 = User.builder()
-                .email("anya@gmail.com")
-                .password(passwordEncoder.encode("5134c"))
-                .username("anyamurm")
+                .email("eldana.omushova@alatoo.edu.kg")
+                .password(passwordEncoder.encode("412054Ma."))
+                .username("eldana956")
                 .roles(Set.of(UserRole.user))
                 .build();
         userRepository.saveAll(List.of(user1, user2));

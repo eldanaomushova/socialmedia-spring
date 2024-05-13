@@ -34,13 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**").disable())
                 .authorizeHttpRequests(
                         req -> req
                                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refreshToken").permitAll()
                                 .requestMatchers("/api/v1/registration/**").permitAll()
                                 .requestMatchers("/error").permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .formLogin(Customizer.withDefaults())
                 .authenticationProvider(daoAuthenticationProvider())

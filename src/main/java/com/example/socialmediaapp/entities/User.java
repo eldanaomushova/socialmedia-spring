@@ -32,6 +32,9 @@ public class User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
+    private String twofa_code;
+    private String twofa_expire_time;
+
     public User(String username,
                 String email,
                 String password,
