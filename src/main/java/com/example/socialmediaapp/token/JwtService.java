@@ -1,22 +1,26 @@
 package com.example.socialmediaapp.token;
+import com.example.socialmediaapp.entities.Token;
+import com.example.socialmediaapp.repositories.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.WeakKeyException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 @Component
 public class JwtService {
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
 
@@ -51,9 +55,11 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String GenerateToken(String username){
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        String token = createToken(claims, username);
+        saveToken(username, token);
+        return token;
     }
 
     private String createToken(Map<String, Object> claims, String username) {
@@ -62,23 +68,31 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*1))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private SecretKey getSignKey() {
-
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-
         try {
             return Keys.hmacShaKeyFor(keyBytes);
-        } catch (WeakKeyException e) {
-            SecretKey secretKey = Jwts.SIG.HS256.key().build();
-            System.out.println("secretKey.getAlgorithm() = " + secretKey.getAlgorithm());
-            System.out.println("secretKey.getFormat() = " + secretKey.getFormat());
-            System.out.println("secretKey.getEncoded() = " + Arrays.toString(secretKey.getEncoded()));
-            System.out.println("new String(secretKey.getEncoded()) = " + new String(secretKey.getEncoded()));
-            return secretKey;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
+    }
+
+    private void saveToken(String username, String token) {
+        Token tokenEntity = new Token();
+        tokenEntity.setUsername(username);
+        tokenEntity.setToken(token);
+        tokenEntity.setExpirationDate(calculateExpirationDate(5));
+        tokenRepository.save(tokenEntity);
+    }
+
+    private Date calculateExpirationDate(int expirationTimeInMinutes) {
+        long now = System.currentTimeMillis();
+        long expirationTime = (long) expirationTimeInMinutes * 60 * 1000;
+        return new Date(now + expirationTime);
     }
 }

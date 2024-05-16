@@ -31,7 +31,7 @@ public class AuthController {
         if(authentication.isAuthenticated()){
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
             return JwtResponseDTO.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
+                    .accessToken(jwtService.generateToken(authRequestDTO.getUsername()))
                     .refreshToken(refreshToken.getToken())
                     .build();
         } else {
@@ -45,7 +45,7 @@ public class AuthController {
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(userInfo -> {
-                    String accessToken = jwtService.GenerateToken(userInfo.getUsername());
+                    String accessToken = jwtService.generateToken(userInfo.getUsername());
                     System.out.println(accessToken);
                     return JwtResponseDTO.builder()
                             .accessToken(accessToken)

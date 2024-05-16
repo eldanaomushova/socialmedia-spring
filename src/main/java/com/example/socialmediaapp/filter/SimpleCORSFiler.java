@@ -42,3 +42,9 @@ public class SimpleCORSFiler  implements Filter {
         }
     }
 }
+//handle Cross-Origin Resource Sharing (CORS) requests
+//Init and destroy methods are lifecycle methods for the filter.
+// By the servlet container during initialization and destruction of the filter, respectively.
+
+//Overall, this filter ensures that your Spring Boot application can handle CORS requests properly,
+// enabling communication with resources hosted on different origins while maintaining security.

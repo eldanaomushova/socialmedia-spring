@@ -34,8 +34,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
     private String twofa_code;
-    private String twofa_expire_time;
-    private int userLimit;
+//    private String twofa_expire_time;
 
     public User(String username,
                 String email,
