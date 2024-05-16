@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.services;
 
+import com.example.socialmediaapp.entities.User;
 import com.example.socialmediaapp.repositories.RefreshTokenRepository;
 import com.example.socialmediaapp.repositories.UserRepository;
 import com.example.socialmediaapp.token.RefreshToken;
@@ -19,15 +20,23 @@ public class RefreshTokenService {
     @Autowired
     UserRepository userRepository;
 
-    public RefreshToken createRefreshToken(String username){
+    public RefreshToken createRefreshToken(String username) {
+        User user = userRepository.findByUsername(username);
+
+        // Find existing refresh token for the user
+        Optional<RefreshToken> existingTokenOptional = refreshTokenRepository.findByUser(user);
+
+        // If an existing token exists, remove it
+        existingTokenOptional.ifPresent(refreshTokenRepository::delete);
+
+        // Create and save new refresh token
         RefreshToken refreshToken = RefreshToken.builder()
-                .userInfo(userRepository.findByUsername(username))
+                .user(user)
                 .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusMillis(600000))
+                .expiryDate(Instant.now().plusMillis(300000))
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }
-
 
 
     public Optional<RefreshToken> findByToken(String token){

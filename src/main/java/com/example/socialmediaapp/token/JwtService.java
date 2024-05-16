@@ -4,9 +4,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.WeakKeyException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +66,19 @@ public class JwtService {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    private Key getSignKey() {
+    private SecretKey getSignKey() {
+
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-        return Keys.hmacShaKeyFor(keyBytes);
+
+        try {
+            return Keys.hmacShaKeyFor(keyBytes);
+        } catch (WeakKeyException e) {
+            SecretKey secretKey = Jwts.SIG.HS256.key().build();
+            System.out.println("secretKey.getAlgorithm() = " + secretKey.getAlgorithm());
+            System.out.println("secretKey.getFormat() = " + secretKey.getFormat());
+            System.out.println("secretKey.getEncoded() = " + Arrays.toString(secretKey.getEncoded()));
+            System.out.println("new String(secretKey.getEncoded()) = " + new String(secretKey.getEncoded()));
+            return secretKey;
+        }
     }
 }

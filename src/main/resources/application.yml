@@ -10,8 +10,8 @@ spring:
             client-id: 47ad5796be4315d91825
             client-secret: c9d79006aefccf898d8fbcaa6fb998dde5f63e12
           facebook:
-            client-id: 963223915034972
-            client-secret: 8318994e3a3fc2e57c30a372a34826af
+            client-id: 747797897517794
+            client-secret: 8a574b0021782f429c07301197f99e1f
             scope:
               - email
               - public_profile
@@ -23,3 +23,18 @@ application:
       refresh-token:
         expiration: 604800000
 
+  datasource:
+    tomcat:
+      max-active: 1
+  session:
+    store-type: none
+    timeout: 86400
+  redis:
+    host: 172.22.64.1
+    port: 6379
+  filters:
+    - name: RequestRateLimiter
+      args:
+        redis-rate-limiter.replenishRate: 20
+        redis-rate-limiter.burstCapacity: 40
+        redis-rate-limiter.requestedTokens: 1

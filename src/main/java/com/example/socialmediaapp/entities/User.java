@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.entities;
 
+import io.swagger.models.auth.In;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,7 @@ public class User {
     private Set<UserRole> roles = new HashSet<>();
     private String twofa_code;
     private String twofa_expire_time;
+    private int userLimit;
 
     public User(String username,
                 String email,
@@ -45,6 +47,4 @@ public class User {
         this.roles = new HashSet<>();
         this.roles.add(appUserRole);
     }
-
-
 }

@@ -39,7 +39,7 @@ public class InitData implements CommandLineRunner {
                 .roles(Set.of(UserRole.user))
                 .build();
         userRepository.saveAll(List.of(user1, user2));
-        generateUsers(10000);
+        generateUsers(100);
         Group group1 = Group.builder()
                 .groupName("students information")
                 .creator(user1)

@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class AuthController {
     public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
                 .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUserInfo)
+                .map(RefreshToken::getUser)
                 .map(userInfo -> {
                     String accessToken = jwtService.GenerateToken(userInfo.getUsername());
                     System.out.println(accessToken);
@@ -62,5 +61,14 @@ public class AuthController {
         }
         return principal;
     }
-
+//    private boolean verifyTwoFactorCode(User user, String twoFactorCode) {
+//        if (user.getTwofa_code() == null || user.getTwofa_code().isEmpty()) {
+//            return true;
+//        } else {
+//            String secretKey = user.getTwofa_code();
+//            GoogleAuthenticator gAuth = new GoogleAuthenticator();
+//            int code = Integer.parseInt(twoFactorCode);
+//            return gAuth.authorize(secretKey, code);
+//        }
+//    }
 }

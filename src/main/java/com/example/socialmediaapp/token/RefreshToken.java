@@ -19,9 +19,10 @@ public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private String token;
     private Instant expiryDate;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User userInfo;
+    private User user;
 }

@@ -21,11 +21,16 @@ public class UserDTO {
     private String email;
     private String password;
     private Set<UserRole> roles;
-
+    private Boolean locked = false;
+    private Boolean enabled = false;
+    private String twofa_code;
+    private String twofa_expire_time;
+    private int limit;
     public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.roles = user.getRoles();
     }
+
 }

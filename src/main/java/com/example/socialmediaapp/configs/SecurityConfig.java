@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.configs;
 
+import io.github.bucket4j.distributed.proxy.ProxyManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
@@ -37,15 +40,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**").disable())
                 .authorizeHttpRequests(
                         req -> req
-                                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refreshToken").permitAll()
-                                .requestMatchers("/api/v1/registration/**").permitAll()
-                                .requestMatchers("/error").permitAll()
+                                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refreshToken", "/api/v1/registration/**", "/error", "users/**").permitAll()
                                 .anyRequest().permitAll()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(withDefaults())
                 .authenticationProvider(daoAuthenticationProvider())
-                .oauth2Login(withDefaults());
-
+                .oauth2Login(withDefaults())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -69,4 +70,5 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
 }

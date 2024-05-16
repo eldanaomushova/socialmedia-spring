@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ import java.util.UUID;
 public class UserServiceJPA implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
     @Override
@@ -33,6 +34,11 @@ public class UserServiceJPA implements UserService {
                 )
         );
     }
+    @Override
+    public Optional<User> getById(Long userId){
+        return userRepository.findById(userId);
+    }
+
     @Override
     public UserDTO createUser(UserDTO newUser) {
         return userMapper.userToUserDto(
