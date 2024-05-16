@@ -42,6 +42,17 @@ application to verify its functionality and behavior. Test cases were maden for:
 * servises
 * exceptions
 
+## Authorizaiton and authentication
+
+Authentication Methods:
+- OAuth: Github and GitHub authentication options, also Facebook, but it will work only after deploying the server.
+- Traditional: Email-based registration and authentication.
+
+Token-Based Authentication: Utilizes JWT for secure, stateless authentication.
+Security Measures: Includes IP blacklisting to block suspicious IPs.
+Email verification for registered users and send a verification email containing a verification link.
+2-factor authentication: Email method, for sending code.
+
 ## How to Run the Application
 
 To run the application locally, follow these steps:
